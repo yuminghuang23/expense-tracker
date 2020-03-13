@@ -15,7 +15,7 @@ import com.cost.repository.MonthlySumRepository;
 public class MonthlySumServiceImpl implements MonthlySumService{
 	
 	@Autowired
-	MonthlySumRepository monthlySumRepository;
+	private MonthlySumRepository monthlySumRepository;
 	
 	@Override
 	public List<MonthlySum> findByUserIdOrderByMonthYear(int userId) {

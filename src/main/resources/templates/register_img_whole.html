@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Theme CSS - Includes Bootstrap -->
+  	<link th:href="@{static/css/creative.css}" rel="stylesheet">
+	<style>
+		.nav-tabs .nav-link.active,
+		.nav-tabs .nav-item.show .nav-link {
+		  color: black;
+		  background-color: white;
+		  border-color: black black ;
+		}
+
+		.nav-tabs {
+   			border-bottom: 1px solid black;
+		}
+		label {
+			color: black;
+		}
+		H2 {
+			color: black;
+		}
+		span {
+			color: black;
+		}
+		a#forgotPassword {
+			color: #f4623a;
+		}
+	</styl
+	</style>
+    <title>Register</title>
+</head>
+<body>
+	<!-- Navigation -->
+  	<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    	<div class="container">
+	      	<a class="navbar-brand js-scroll-trigger" th:href="@{/}">Expense Tracker</a>
+	      	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+	        	<span class="navbar-toggler-icon"></span>
+	      	</button>
+	      	<div class="collapse navbar-collapse" id="navbarResponsive">
+	        	<ul class="navbar-nav ml-auto my-2 my-lg-0">
+	          	<li class="nav-item">
+	            	<a class="nav-link js-scroll-trigger" href="#">Services</a>
+	          	</li>
+	          	<li class="nav-item">
+	            	<a class="nav-link js-scroll-trigger" href="#services">About</a>
+	          	</li>
+	          	<li class="nav-item">
+	            	<a class="nav-link js-scroll-trigger" href="@{/login}">Login</a>
+	          	</li>
+	          	<li class="nav-item">
+	            	<a class="nav-link js-scroll-trigger" href="@{/register}">Register</a>
+	          	</li>
+	        	</ul>
+	      	</div>
+    	</div>
+  	</nav>
+	<header class="masthead">
+    <br>
+    <br>
+    <br>
+	    <div class="container">
+		    <div class="row">
+				<div class="col-md-6 offset-md-3">
+			            <ul class="nav nav-tabs" role="tablist">
+			                <li class="nav-item col-sm-6">
+			                	<a th:href="@{/login}">Login</a>
+			                </li>
+			                <li class="nav-item col-md-6">
+			                	<a class="nav-link active" th:href="@{/register}">Register</a>
+			                </li>
+			            </ul>
+			            <form id="registerForm" th:object="${reqUser}" th:action="@{/user/register}" method="post">
+			
+			                    <div th:if="${saveUser eq 'success'}" class="alert alert-success alert-dismissable">
+			                        <button type="button" class="close" data-dismiss="alert"
+			                                aria-hidden="true">&times;</button>
+			                        <strong>User registered Successfully</strong> Please Login
+			                    </div>
+			
+			                    <div th:if="${saveUser eq 'exist-name'}" class="alert alert-danger alert-dismissable">
+			                        <button type="button" class="close" data-dismiss="alert"
+			                                aria-hidden="true">&times;</button>
+			                        <strong>Error!</strong> User name already used !!!
+			                    </div>
+			                    <div th:if="${saveUser eq 'exist-email'}" class="alert alert-danger alert-dismissable">
+			                        <button type="button" class="close" data-dismiss="alert"
+			                                aria-hidden="true">&times;</button>
+			                        <strong>Error!</strong> User email already used !!!
+			                    </div>
+			                    <div th:if="${saveUser eq 'fail'}" class="alert alert-danger alert-dismissable">
+			                        <button type="button" class="close" data-dismiss="alert"
+			                                aria-hidden="true">&times;</button>
+			                        <strong>Error!</strong> Unexpected error !!!
+			                    </div>
+								
+								
+				                    <div class="form-group">
+				                        <label for="username">Username</label>: 
+				                        	<input th:field="*{username}" type="text" name="register_username" class="form-control"
+				                                       placeholder="Username" required="required" value=""/>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="email">Email</label>: 
+				                        	<input th:field="*{email}" type="email" name="register_email"
+				                                       class="form-control" placeholder="Email" required="required" value=""/>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="password">Password</label>: 
+				                        	 <input th:field="*{password}" type="password" name="register_password"
+				                                       class="form-control" id="password" placeholder="Password" required="required"/>
+				                    </div>
+				                    <div class="form-group">
+				                        <label for="password">Confirm Password</label>: 
+				                        	 <input type="password" name="register_password"
+				                                       class="form-control" id="confirm_password"
+				                                       placeholder="Confirm Password" required="required"/>
+				                    </div>
+				                    <div class="form-group">
+					                	<div class="row">
+					                    	<div class="col-sm-6 offset-sm-3">
+					                        	<input type="submit" value="Register" name="register-submit" id="register-submit" 
+					                                		class="form-control btn btn-primary"/>
+					                        </div>
+					                  	</div>
+				                    </div>
+				                    <div class="form-group">
+				                        <span>Forgot password? <a id="forgotPassword" href="/" th:href="@{/forgotPassword}">Click here</a></span>
+				                    </div>	
+			                	</form>		
+			                </div>
+			            </div>
+			        </div>
+	
+</header>
+ 	<!-- Bootstrap Core JavaScript -->
+  	<script th:src="@{/static/vendor/jquery/jquery.min.js/}"></script>
+	<script th:src="@{/static/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<script>
+	    var password = document.getElementById("password"), 
+	        confirm_password = document.getElementById("confirm_password");
+	
+	    function validatePassword() {
+	        if (password.value != confirm_password.value) {
+	            confirm_password.setCustomValidity("Passwords Don't Match");
+	        } else {
+	            confirm_password.setCustomValidity('');
+	        }
+	    }
+	    password.onchange = validatePassword;
+	    confirm_password.onkeyup = validatePassword;
+	</script>
+
+</body>
+</html>

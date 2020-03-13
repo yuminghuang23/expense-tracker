@@ -49,17 +49,31 @@ public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired
+    //@Autowired
     private GlobalController globalController;
 
-    @Autowired
+    //@Autowired
     private RecordService recordService;
 
-    @Autowired
+    //@Autowired
     private UserService userService;
     
-    @RequestMapping("/")
+    @Autowired
+    public UserController(GlobalController globalController, RecordService recordService, UserService userService) {
+		this.globalController = globalController;
+		this.recordService = recordService;
+		this.userService = userService;
+	}
+
+	@RequestMapping("/")
     public String root(Model model) {
+		if(globalController.getLoginUser() != null) {
+			model.addAttribute("loggedin", "yes");
+			model.addAttribute("username", globalController.getLoginUser().getUsername());
+    	}
+		else {
+			model.addAttribute("loggedin", "no");
+		}
         model.addAttribute("reqUser", new User());
         logger.info("root");
         return "index";
@@ -67,6 +81,9 @@ public class UserController {
     
     @RequestMapping("/login")
     public String login(Model model) {
+    	if(globalController.getLoginUser() != null) {
+    		return "redirect:/";
+    	}
         model.addAttribute("reqUser", new User());
         logger.info("login");
         return "login";

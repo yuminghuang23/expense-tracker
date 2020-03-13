@@ -1,0 +1,275 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Report</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{static/css/bootstrap.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{static/css/bootstrap-datetimepicker.css}">
+	
+	<!-- Glyphicons -->
+	<link th:href="@{static/css/bootstrap-glyphicons.css}" rel="stylesheet" type="text/css" />
+	
+    <!-- Theme CSS - Includes Bootstrap -->
+    <link th:href="@{static/css/dashboard.css}" rel="stylesheet">
+  	<link th:href="@{static/css/jumbotron.css}" rel="stylesheet">
+  	<link rel="stylesheet" type="text/css" href="css/report-page-graph-css.css" />
+  	
+  	<style>
+  		.jumbotron {
+			  background: url("../static/img/bg-home2.jpg");
+			  background-repeat: no-repeat;
+			  background-size: cover;
+		    }
+  		.nav-item a, .dropdown a{
+  				font-size: 1.25em;
+		    }
+		.navbar-nav > li{
+				padding-left:10px;
+			    padding-right:10px;
+			}
+		.dropdown-item a{
+				font-size: 0.5em;
+			}
+		span#copyright_img{
+				font-size: 0.7em;
+			}
+  	</style>
+  </head>
+
+  <body>
+  	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Expense Tracker</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <!--  Button style nav items     <ul class="navbar-nav ml-auto my-2 my-lg-0">
+      	<button class="btn btn-outline-secondary active" type="button">Home</button>
+	    <button class="btn btn-outline-secondary" type="button">Track</button>
+	    <button class="btn btn-outline-secondary" type="button">Report</button>
+	    <button class="btn btn-outline-secondary" type="button">Records</button>
+	    <button class="btn btn-outline-secondary" type="button">
+	    	<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Change Password</a>
+              <div class="dropdown-divider"></div>
+  			  <a class="dropdown-item" href="#">Logout</a>
+            </div>
+	    </button>
+	    </ul-->
+        <ul class="navbar-nav ml-auto my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/home}">Track</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" th:href="@{/report}">Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/allRecords}">Records</a>
+          </li>
+          <li class="dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+              <a class="dropdown-item" th:href="@{/changePassword}">Change Password</a>
+              <div class="dropdown-divider"></div>
+  			  <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  	
+  	<br/>
+    <div class="jumbotron">
+    <p align="center" class="display-5">Manage all of your spendings here</p>
+    </div>
+    
+  	<div class="row">
+    <div class="col-md-2 mb-3">
+        <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="home" 
+		    	aria-selected="true">Statistics Summary</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="profile" 
+		    	aria-selected="false">Previous Month Summary</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="contact" 
+		    	aria-selected="false">Previous Week Summary</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#tab4" role="tab" aria-controls="contact" 
+		    	aria-selected="false">Historical Data</a>
+		  </li>
+		</ul>
+    </div>
+    <!-- /.col-md-4 -->
+    <div class="col-md-10">
+   		<div class="tab-content" id="myTabContent">
+	  	<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">
+	  		<h2>Statistics summary of last month</h2>
+		                <ul>
+		                	<li>How much spend last month, total</li>
+						    <li>in each category</li>
+						    <li>Compare current to past</li>
+						    <li>Avg daily spending</li>
+						    <li>Avg weekly spending</li>
+		                </ul>
+	    	<div id="bubble"></div>
+	  	</div>
+	  	<div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="profile-tab">
+	  		<ul class="nav nav-tabs">
+				<li class="nav-item">
+			    	<a class="nav-link active" href="#monthOverall" data-toggle="tab">Overall Summary</a>
+			  	</li>
+			  	<li class="nav-item">
+			    	<a class="nav-link" href="#monthByCat" data-toggle="tab">By Category</a>
+			  	</li>
+			 </ul>
+			<div class="tab-content col-md-12">
+				<div class="tab-pane active" id="monthOverall">
+					<div id="bar" class="svg-container"></div> 
+				</div>
+				<div class="tab-pane" id="monthByCat">
+					<div class="styled-select">
+						<p id = 'dropdown_title' style="font-family: arial;" >Select Category</p>
+						<select th:field="*{enumList}" id="categoryDropdown">
+							<option th:each="i : ${enumList}" th:id="${i}" th:value="${i}" th:text="${i}"></option>
+						</select>
+					</div>
+					<div id="barByCategory" class="svg-container"></div>
+				</div>     
+			</div>
+		</div>
+		<div class="tab-pane" id="tab3">Coming Soon....</div>
+		        <div class="tab-pane" id="tab4">
+		        	<h2>line chart, total spending each month</h2>
+		            <div id="lineChart" class="svg-container"></div>
+		            <h2>Forecast possible?</h2>
+		        </div> 
+	    
+	  	</div>
+	  	
+	</div>
+    </div>
+
+  
+ 
+    <footer class="container">
+      <p>&copy; Dango </p>
+    </footer>
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/static/vendor/jquery/jquery.min.js/}"></script>
+  	<script th:src="@{/static/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  
+	<!-- Plugin JavaScript -->
+	<script th:src="@{static/vendor/jquery-easing/jquery.easing.min.js}"></script>
+	<script th:src="@{static/vendor/magnific-popup/jquery.magnific-popup.min.js}"></script>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+    <script th:inline="javascript">
+    	//************** Jquery for div width ************//
+    	 var w = $(window).width();
+ 		$('.svg-container').css('width', w*0.8);
+ 		
+    	//******************** All Data ******************//
+    	var allRecordsByCatDate = /*[[${recordsSumGroupedByCatDate}]]*/ {};
+        //console.log(allRecordsByCatDate);
+        
+    	var enumList = /*[[${enumList}]]*/ {};
+        console.log(enumList);
+        //console.log(enumList[0]);
+        
+        var allRecordsByCat = /*[[${recordsSumGroupedByCat}]]*/ {};
+        //console.log(allRecordsByCat);
+        
+        var monthlySumByUser = /*[[${monthlySumByUser}]]*/ {};
+        //console.log(monthlySumByUser);
+        
+        //******************** GLOBAL VARIABLE *************************//
+        var color = ["#98abc5", "#8a89a6", "#7b6888", "#3288bd", "#a05d56", "#d0743c", "#ff8c00",
+	                    "#DAF7A6", "#FF5733", "#c7eae5", "#b2df8a","#33FFBD","#e6194b","#ffe119","#fabebe","#35978f"];
+	        
+	    var color = d3.scaleOrdinal()
+	        .range(color);
+	</script>  
+	
+    <!-- //********************FUNCTIONS *************************// -->
+    <script src="js/report-page-function.js"></script>
+    <script src="js/report-page-graph.js"></script>
+    <script th:inline="javascript">   
+    
+        // ***************** PROCESS DATA ***************** //
+        // sort data first 
+        allRecordsByCatDate.sort(sortFunction);
+        //console.log(allRecordsByCatDate);
+        // get all dates from last month 
+        var date = new Date();
+        var firstDay =  new Date(date.getFullYear(), date.getMonth() - 1, 1); 
+        var lastDay =  new Date(date.getFullYear(), date.getMonth(), 0);
+        var dateArr = getAllDates(firstDay, lastDay);
+        //console.log(dateArr);
+        // get final json 
+        var allRecordsByCatDate = finalJson(allRecordsByCatDate, dateArr);
+        //console.log(allRecordsByCatDate);
+		
+        dataForLine = monthlySumByUser.sort(sortFunctionForLineData); 
+        
+        console.log(allRecordsByCat);
+        console.log(allRecordsByCatDate);
+        console.log(allRecordsByCatDate);
+        console.log(dataForLine);
+        
+        //display = JSON.stringify(allRecordsByCatDate, null, 4);
+        //document.getElementById("demo").innerHTML = display;
+        
+     	// ***************** DRAW ALL GRAPH ***************** //
+        DrawBubbleChart(allRecordsByCat, color)
+     	//DrawStackBar(allRecordsByCatDate, color);
+        DrawStackBar(allRecordsByCatDate, color, enumList);
+        DrawBarByCategory('CAR', allRecordsByCatDate);
+        DrawLineChart(dataForLine);
+        
+        // change graph based on selection
+        d3.selectAll("#categoryDropdown").on("change", change);
+        
+    	// function to change category and re-plot based on selection
+        function change() {
+            var e = document.getElementById("categoryDropdown");
+            //console.log(e.selectedIndex);
+            //console.log(e.options[e.selectedIndex].value);
+            var category = e.options[e.selectedIndex].value;
+            var s = d3.selectAll('svg');
+            s = s.remove();
+            
+            DrawBubbleChart(allRecordsByCat, color);
+            DrawBarByCategory(category, allRecordsByCatDate);
+            //DrawStackBar(allRecordsByCatDate, color);
+            DrawStackBar(allRecordsByCatDate, color, enumList);
+            DrawLineChart(dataForLine);
+            
+        }
+    </script>
+</nav>
+</body>
+</html>
