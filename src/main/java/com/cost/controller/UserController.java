@@ -149,21 +149,25 @@ public class UserController {
         logger.info("/user/register");
         User user = userService.findByUserName(reqUser.getUsername());
         if (user != null) {
+        	logger.info("username not null");
             redirectAttributes.addFlashAttribute("saveUser", "exist-name");
             return "redirect:/register";
         }
         user = userService.findByEmail(reqUser.getEmail());
         if (user != null) {
+        	logger.info("email not null");
             redirectAttributes.addFlashAttribute("saveUser", "exist-email");
             return "redirect:/register";
         }
 
         reqUser.setPassword(PasswordEncoding.getInstance().passwordEncoder.encode(reqUser.getPassword()));
         reqUser.setRole(Roles.USER.getValue());
-        
+        logger.info("saving user");
         if (userService.save(reqUser) != null) {
+        	logger.info("user saved");
             redirectAttributes.addFlashAttribute("saveUser", "success");
         } else {
+        	logger.info("user save failed");
             redirectAttributes.addFlashAttribute("saveUser", "fail");
         }
 
