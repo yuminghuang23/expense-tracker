@@ -8,3 +8,5 @@ A Spring Boot Web Application
 
 Website can be explored on heroku: 
 https://expense-tracker-alpha.herokuapp.com/ 
+
+## Author: Yuming Huang
