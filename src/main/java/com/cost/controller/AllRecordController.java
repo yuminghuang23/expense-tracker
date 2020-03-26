@@ -27,6 +27,7 @@ public class AllRecordController {
 	
 	@RequestMapping(value = {"/allRecords"})
     public String allRecords(Model model, HttpServletRequest request) {
+
     	int page = 0; //default page number is 0 (yes it is weird)
         int size = 10; //default page size is 10
         
@@ -43,8 +44,13 @@ public class AllRecordController {
 
     	Page<Record> records = recordService.findAllByUserId(PageRequest.of(page, size, Sort.by("recordDate").descending()), userId);
     	
+    	if(records.toString().equalsIgnoreCase("Page 1 of 0 containing UNKNOWN instances")) {
+    		model.addAttribute("error", "empty");
+    	}
+    	
     	model.addAttribute("username", username);
     	model.addAttribute("records", records);
+    	
     	return "allRecords";
     }
 	

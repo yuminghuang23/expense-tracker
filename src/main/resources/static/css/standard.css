@@ -1,0 +1,34 @@
+@charset "ISO-8859-1";
+
+.jumbotron {
+			  background: url("../img/bg-home2.jpg");
+			  background-repeat: no-repeat;
+			  background-size: cover;
+		    }
+ .nav-item a, .dropdown a{
+  				font-size: 1.25em;
+		    }
+.navbar-nav > li{
+				padding-left:10px;
+			    padding-right:10px;
+			}
+.dropdown-item a{
+				font-size: 0.5em;
+			}
+span#copyright_img{
+				font-size: 0.7em;
+			}
+#page-container {
+			  position: relative;
+			  min-height: 100vh;
+			}	
+#content-wrap {
+			  padding-bottom: 2.5rem;    /* Footer height */
+			}
+			
+#footer {
+			  position: absolute;
+			  bottom: 0;
+			  width: 100%;
+			  height: 2.5rem;            /* Footer height */
+			}

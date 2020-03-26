@@ -18,29 +18,11 @@
 	
     <!-- Theme CSS - Includes Bootstrap -->
   	<link th:href="@{static/css/jumbotron.css}" rel="stylesheet">
-  	<style>
-  		.jumbotron {
-			  background: url("../static/img/bg-home2.jpg");
-			  background-repeat: no-repeat;
-			  background-size: cover;
-		    }
-  		.nav-item a, .dropdown a{
-  				font-size: 1.25em;
-		    }
-		.navbar-nav > li{
-				padding-left:10px;
-			    padding-right:10px;
-			}
-		.dropdown-item a{
-				font-size: 0.5em;
-			}
-		span#copyright_img{
-				font-size: 0.7em;
-			}
-  	</style>
+  	<link th:href="@{static/css/standard.css}" rel="stylesheet">
   </head>
 
   <body>
+  	<div id="page-container">
   	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="#">Expense Tracker</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,7 +89,7 @@
                   	</tr>
               	</thead>
                 <tbody>
-                	<tr th:if="${#lists.isEmpty(records)}" class="btn-default">
+                	<tr th:if="${error == 'empty'}" class="btn-default">
                     	<td colspan="5" align="center"><h3>No Record Entered Yet</h3></td>
                     </tr> 
                     <tr th:each="record, index : ${records}">
@@ -184,10 +166,11 @@
     </div>
     </div>
     
-    <footer class="container">
+    <footer id="footer" class="container">
       <p>&copy; Dango </p>
     </footer>
     
+    </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -200,7 +183,6 @@
 	<script th:src="@{static/vendor/magnific-popup/jquery.magnific-popup.min.js}"></script>
     
     <script type="text/javascript">
-	   
 	    $(function () {
 		    $(".table .delBtn").on("click", function (event) {
 		        event.preventDefault();

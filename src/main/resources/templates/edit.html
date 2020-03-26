@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Edit Spending</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet">
+	<link href="../static/css/bootstrap-datetimepicker.css" th:href="@{/css/bootstrap-datetimepicker.css}" type="text/css" rel="stylesheet">
+    
+    <!-- Glyphicons -->
+	<link th:href="@{/css/bootstrap-glyphicons.css}" rel="stylesheet" type="text/css" />
+	
+    <!-- Theme CSS - Includes Bootstrap -->
+  	<link th:href="@{/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/css/standard.css}" rel="stylesheet">
+  </head>
+
+  <body>
+  	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Expense Tracker</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto my-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" th:href="@{/home}">Track</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/report}">Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/allRecords}">Records</a>
+          </li>
+          <li class="dropdown">
+            <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+              <a class="dropdown-item" th:href="@{/changePassword}">Change Password</a>
+              <div class="dropdown-divider"></div>
+  			  <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br/>
+   
+    <div class="jumbotron">
+    <p align="center" class="display-5">Edit Record</p>
+    </div>
+
+	        <div class="container">
+	        	<div class="row">
+	            	<div class="col-md-6 offset-3 form-group">
+	
+	                    <div th:if="${msg eq 'success'}" class="alert alert-success alert-dismissable">
+	                        <button type="button" class="close" data-dismiss="alert"
+	                                aria-hidden="true">&times;
+	                        </button>
+	                        <strong>Success </strong> Record updated
+	                    </div>
+	                    <div th:if="${msg eq 'same'}" class="alert alert-warning alert-dismissable">
+	                        <button type="button" class="close" data-dismiss="alert"
+	                                aria-hidden="true">&times;
+	                        </button>
+	                        <strong>Warning !!! </strong> Please update at least one filed
+	                    </div>
+	                    <div th:if="${msg eq 'fail'}" class="alert alert-danger alert-dismissable">
+	                        <button type="button" class="close" data-dismiss="alert"
+	                                aria-hidden="true">&times;
+	                        </button>
+	                        <strong>Error !!!  </strong> Unexpected error occurred. Please try later.
+	                    </div>
+	
+	                    <!--/-->
+	                    <form th:object="${editRecord}" th:action="@{/record/editRecord}" method="post">
+	                        <input type="hidden" th:field="*{recordId}" th:value="*{recordId}"/>
+	                        <input type="hidden" th:field="*{userId}" th:value="*{userId}"/>
+	                        
+	                        <div class="row">
+								<div class="col-md-3 offset-md-2" align="left">Category</div>
+								<div class="col-md-5 ">
+									<div class="form-group">
+										<select  class="form-control" th:field="*{category}" placeholder="*{Category}" name="Category">
+			   								<option th:each="state : ${T(com.cost.utils.Categories).values()}"
+											            th:value="${state}" th:text="${state}">
+											</option>
+										</select>
+		                            </div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 offset-md-2" align="left">Cost</div>
+								<div class="col-md-5">
+									<div class="form-group">
+			                        	<input id="cost" th:field="*{cost}" type="text" class="form-control" name="Cost"
+			                                       required="required" placeholder="Cost"/>
+			                        </div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3 offset-md-2" align="left">Record Date</div>
+								<div class="col-md-5">
+									<div class="form-group">
+			                        	<div class="input-group date" id="recordDate">
+			                            	<input th:field="*{recordDate}" class="form-control" name="recordDate"
+			                                           required="required" placeholder="Record Date" id="recordDate"/>
+			                                <span class="input-group-addon">
+			                                	<span class="glyphicon glyphicon-calendar"></span>
+			                               	</span>
+			                            </div>
+		                           	</div>
+								</div>
+							</div>
+							<br/>
+							<div class="row">
+			                	<div class="modal-footer offset-md-1">
+				                	<div class="col-md-6">
+				                    	<button class="form-control btn btn-primary"><span class="glyphicon glyphicon-send"></span>
+				                              Update
+				                        </button>
+				                    </div>
+				                    <div class="col-md-3">
+				                        <a th:href="@{/home}" class="form-control btn btn-default">Tracking Page</a>
+				                    </div>
+				                    <div class="col-md-3">
+				                        <a th:href="@{/allRecords}" class="form-control btn btn-default">Records Page</a>
+				                    </div>
+			                  	</div>
+			                 </div>
+			             </form>
+			          </div>
+			          <span class="help-block"></span>
+			      </div>
+	    	</div>
+	    	
+	<footer id="footer" class="container">
+	      <p>&copy; Dango </p>
+	</footer>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{../../static/vendor/jquery/jquery.min.js/}"></script>
+  	<script th:src="@{/static/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  
+	<!-- Plugin JavaScript -->
+	<script th:src="@{../../static/vendor/jquery-easing/jquery.easing.min.js}"></script>
+	<script th:src="@{../../static/vendor/magnific-popup/jquery.magnific-popup.min.js}"></script>
+	
+	<!-- DateTimePicker -->
+    <script th:src="@{../../static/js/moment.min.js}"></script>
+    <script th:src="@{../../static/js/bootstrap-datetimepicker.min.js}"></script>
+    
+	<script type="text/javascript">
+	    $(function () {
+	        $('#startDatePicker').datetimepicker({
+	            viewMode: 'days',
+	            format: 'DD/MM/YYYY'
+	        });
+	    });
+	</script>
+</body>
+</html>

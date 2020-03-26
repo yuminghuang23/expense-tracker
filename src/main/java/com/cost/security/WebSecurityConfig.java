@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
     	http
         .authorizeRequests()
-                .antMatchers("/", "/login", "/register", "/user/register", "/static/**", "/forgotPassword", "/resetPassword").permitAll()
+                .antMatchers("/", "/login", "/register", "/user/register", "/noLogin", "/static/**", "/forgotPassword", "/resetPassword").permitAll()
                 .antMatchers("/", "/login", "/register", "/user/register", "/webjars/**").permitAll()
                 //.antMatchers("/admin/**").access("hasRole('ADMIN')")
                 //.antMatchers(HttpMethod.POST).permitAll()

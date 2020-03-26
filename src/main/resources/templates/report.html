@@ -17,33 +17,14 @@
 	<link th:href="@{static/css/bootstrap-glyphicons.css}" rel="stylesheet" type="text/css" />
 	
     <!-- Theme CSS - Includes Bootstrap -->
-    <link th:href="@{static/css/dashboard.css}" rel="stylesheet">
   	<link th:href="@{static/css/jumbotron.css}" rel="stylesheet">
   	<link rel="stylesheet" type="text/css" href="css/report-page-graph-css.css" />
+  	<link th:href="@{static/css/standard.css}" rel="stylesheet">
   	
-  	<style>
-  		.jumbotron {
-			  background: url("../static/img/bg-home2.jpg");
-			  background-repeat: no-repeat;
-			  background-size: cover;
-		    }
-  		.nav-item a, .dropdown a{
-  				font-size: 1.25em;
-		    }
-		.navbar-nav > li{
-				padding-left:10px;
-			    padding-right:10px;
-			}
-		.dropdown-item a{
-				font-size: 0.5em;
-			}
-		span#copyright_img{
-				font-size: 0.7em;
-			}
-  	</style>
   </head>
 
   <body>
+  	<div id="page-container">
   	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="#">Expense Tracker</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,21 +32,6 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <!--  Button style nav items     <ul class="navbar-nav ml-auto my-2 my-lg-0">
-      	<button class="btn btn-outline-secondary active" type="button">Home</button>
-	    <button class="btn btn-outline-secondary" type="button">Track</button>
-	    <button class="btn btn-outline-secondary" type="button">Report</button>
-	    <button class="btn btn-outline-secondary" type="button">Records</button>
-	    <button class="btn btn-outline-secondary" type="button">
-	    	<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">Change Password</a>
-              <div class="dropdown-divider"></div>
-  			  <a class="dropdown-item" href="#">Logout</a>
-            </div>
-	    </button>
-	    </ul-->
         <ul class="navbar-nav ml-auto my-lg-0">
           <li class="nav-item">
             <a class="nav-link" th:href="@{/}">Home</a>
@@ -93,86 +59,115 @@
   	
   	<br/>
     <div class="jumbotron">
-    <p align="center" class="display-5">Manage all of your spendings here</p>
+    <p align="center" class="display-5">Report Summary of Your Spendings</p>
     </div>
     
   	<div class="row">
-    <div class="col-md-2 mb-3">
-        <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
-		  <li class="nav-item">
-		    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="home" 
-		    	aria-selected="true">Statistics Summary</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="profile" 
-		    	aria-selected="false">Previous Month Summary</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="contact" 
-		    	aria-selected="false">Previous Week Summary</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#tab4" role="tab" aria-controls="contact" 
-		    	aria-selected="false">Historical Data</a>
-		  </li>
-		</ul>
-    </div>
-    <!-- /.col-md-4 -->
-    <div class="col-md-10">
-   		<div class="tab-content" id="myTabContent">
-	  	<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">
-	  		<h2>Statistics summary of last month</h2>
-		                <ul>
-		                	<li>How much spend last month, total</li>
-						    <li>in each category</li>
-						    <li>Compare current to past</li>
-						    <li>Avg daily spending</li>
-						    <li>Avg weekly spending</li>
-		                </ul>
-	    	<div id="bubble"></div>
-	  	</div>
-	  	<div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="profile-tab">
-	  		<ul class="nav nav-tabs">
-				<li class="nav-item">
-			    	<a class="nav-link active" href="#monthOverall" data-toggle="tab">Overall Summary</a>
-			  	</li>
-			  	<li class="nav-item">
-			    	<a class="nav-link" href="#monthByCat" data-toggle="tab">By Category</a>
-			  	</li>
-			 </ul>
-			<div class="tab-content col-md-12">
-				<div class="tab-pane active" id="monthOverall">
-					<div id="bar" class="svg-container"></div> 
-				</div>
-				<div class="tab-pane" id="monthByCat">
-					<div class="styled-select">
-						<p id = 'dropdown_title' style="font-family: arial;" >Select Category</p>
-						<select th:field="*{enumList}" id="categoryDropdown">
-							<option th:each="i : ${enumList}" th:id="${i}" th:value="${i}" th:text="${i}"></option>
-						</select>
-					</div>
-					<div id="barByCategory" class="svg-container"></div>
-				</div>     
-			</div>
-		</div>
-		<div class="tab-pane" id="tab3">Coming Soon....</div>
-		        <div class="tab-pane" id="tab4">
-		        	<h2>line chart, total spending each month</h2>
-		            <div id="lineChart" class="svg-container"></div>
-		            <h2>Forecast possible?</h2>
-		        </div> 
-	    
-	  	</div>
-	  	
-	</div>
-    </div>
-
-  
+	    <div class="col-md-2 mb-3">
+	        <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+			  <li class="nav-item">
+			    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#tab1" role="tab" aria-selected="true">Statistics Summary</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#tab2" role="tab"aria-selected="false">Previous Month Summary</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#tab3" role="tab" aria-selected="false">Historical Data</a>
+			  </li>
+			</ul>
+	    </div>
  
-    <footer class="container">
-      <p>&copy; Dango </p>
-    </footer>
-    
+     	<div class="col-md-10">
+      		<div class="tab-content" id="myTabContent">
+  				<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">	
+  					<h2>Compare current month with previous month</h2>
+  					<div class="row">
+	  						<div class="col-md-5 form-group">
+		  						<div class="card" style="height: 45rem;">
+		  							<p class="display-6" >Statistics summary of last month</p>
+							                <ul>
+							                	<li>In the previous month, total spendings: $<span id="totalLastMonth"></span></li>
+											    <li>Avg daily spending : $<span id="avgDaily"></span></li>
+											    <li>Avg weekly spending : $<span id="avgWeekly"></span></li>
+							                </ul>
+						    		<div id="bubble" align="center">
+						    			<div th:if="${recordsSumGroupedByCat == null}">
+						    				<p>No records yet</p>
+						    			</div>
+		    						</div>
+		  						</div>
+		  					</div>
+	  						<div class="col-md-5 form-group">
+		  						<div class="card" style="height: 45rem;">
+		  							<p class="display-6" >Statistics summary of current month</p>
+							                <ul>
+							                	<li>In the current month, total spendings: $<span id="totalCurrentMonth"></span></li>
+											    <li>Avg daily spending : $<span id="avgDailyCurrent"></span></li>
+											    <li>Avg weekly spending : $<span id="avgWeeklyCurrent"></span></li>
+							                </ul>
+						    		<div id="bubbleCurrent">
+						    			<div th:if="${currentMonth == null}">
+						    				<p>No records yet</p>
+						    			</div>
+		    						</div>
+		  						</div>
+		  					</div>
+  					</div>
+				    
+				</div>
+				<div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="profile-tab">
+					<h2>Visualize</h2>
+					<div class="row">
+					  	<ul class="nav nav-tabs">
+							<li class="nav-item">
+						    	<a class="nav-link active" href="#monthOverall" data-toggle="tab">Overall Summary</a>
+						  	</li>
+						  	<li class="nav-item">
+						    	<a class="nav-link" href="#monthByCat" data-toggle="tab">By Category</a>
+						  	</li>
+						 </ul>
+					 </div>
+					 <div class="tab-content col-md-12">
+						<div class="tab-pane active" id="monthOverall">
+							<div id="bar" class="svg-container">
+								<div th:if="${recordsSumGroupedByCatDate == null}">
+					    			<p>No records yet</p>
+					    		</div>
+							</div> 
+						</div>
+						<div class="tab-pane" id="monthByCat">
+							<div class="styled-select">
+								<p id = 'dropdown_title' style="font-family: arial;" >Select Category</p>
+								<select th:field="*{enumList}" id="categoryDropdown">
+									<option th:each="i : ${enumList}" th:id="${i}" th:value="${i}" th:text="${i}"></option>
+								</select>
+							</div>
+							<div id="barByCategory" class="svg-container">
+								<div th:if="${recordsSumGroupedByCatDate == null}">
+					    			<p>No records yet</p>
+					    		</div>
+							</div>
+						</div>     
+					</div>
+				</div>
+  				<div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="contact-tab">
+  					<h2>Total spending each month</h2>
+    				<div id="lineChart" class="svg-container">
+		            	<div th:if="${monthlySumByUser == null}">
+			    			<p>No records yet</p>
+			    		</div>
+		            </div>
+  				</div>
+			</div>
+    	</div>
+
+  	</div>
+
+
+    <footer id="footer" class="container">
+	      <p>&copy; Dango </p>
+	</footer>
+    </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -197,7 +192,7 @@
         //console.log(allRecordsByCatDate);
         
     	var enumList = /*[[${enumList}]]*/ {};
-        console.log(enumList);
+        //console.log(enumList);
         //console.log(enumList[0]);
         
         var allRecordsByCat = /*[[${recordsSumGroupedByCat}]]*/ {};
@@ -205,6 +200,9 @@
         
         var monthlySumByUser = /*[[${monthlySumByUser}]]*/ {};
         //console.log(monthlySumByUser);
+        
+        var currentMonth = /*[[${currentMonth}]]*/ {};
+        console.log(currentMonth);
         
         //******************** GLOBAL VARIABLE *************************//
         var color = ["#98abc5", "#8a89a6", "#7b6888", "#3288bd", "#a05d56", "#d0743c", "#ff8c00",
@@ -238,13 +236,12 @@
         console.log(allRecordsByCat);
         console.log(allRecordsByCatDate);
         console.log(allRecordsByCatDate);
-        console.log(dataForLine);
-        
-        //display = JSON.stringify(allRecordsByCatDate, null, 4);
-        //document.getElementById("demo").innerHTML = display;
-        
+        console.log(monthlySumByUser);
+        console.log(dataForLine);         
+
      	// ***************** DRAW ALL GRAPH ***************** //
-        DrawBubbleChart(allRecordsByCat, color)
+        DrawBubbleChart(allRecordsByCat, color);
+        DrawBubbleChartCurrent(currentMonth, color);
      	//DrawStackBar(allRecordsByCatDate, color);
         DrawStackBar(allRecordsByCatDate, color, enumList);
         DrawBarByCategory('CAR', allRecordsByCatDate);
@@ -263,6 +260,7 @@
             s = s.remove();
             
             DrawBubbleChart(allRecordsByCat, color);
+            DrawBubbleChartCurrent(currentMonth, color);
             DrawBarByCategory(category, allRecordsByCatDate);
             //DrawStackBar(allRecordsByCatDate, color);
             DrawStackBar(allRecordsByCatDate, color, enumList);

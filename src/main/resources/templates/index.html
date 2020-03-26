@@ -17,30 +17,13 @@
 	
     <!-- Theme CSS - Includes Bootstrap -->
   	<link th:href="@{static/css/jumbotron.css}" rel="stylesheet">
-  	<style>
-  		.jumbotron {
-			  background: url("../static/img/bg-home2.jpg");
-			  background-repeat: no-repeat;
-			  background-size: cover;
-		    }
-  		.nav-item a, .dropdown a{
-  				font-size: 1.25em;
-		    }
-		.navbar-nav > li{
-				padding-left:10px;
-			    padding-right:10px;
-			}
-		.dropdown-item a{
-				font-size: 0.5em;
-			}
-		span#copyright_img{
-				font-size: 0.7em;
-			}
-  	</style>
+  	
+  	<link th:href="@{static/css/standard.css}" rel="stylesheet">
   </head>
 
   <body>
-
+	<div id="page-container">
+   	<div id="content-wrap">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="#">Expense Tracker</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,13 +51,13 @@
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" th:href="@{/home}">Track</a>
+            	<a class="nav-link disabled" th:href="@{/home}">Track</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" th:href="@{/report}">Report</a>
+            	<a class="nav-link disabled" th:href="@{/report}">Report</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" th:href="@{/allRecords}">Records</a>
+            	<a class="nav-link disabled" th:href="@{/allRecords}">Records</a>
           </li>
           <li class="dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
@@ -98,30 +81,32 @@
     </nav>
 
     <main role="main" align="center">
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-      <div class="jumbotron">
-        <div class="container">
-          </br>
-          </br>
-          <h1 class="display-2">Track Spending & Know them</h1>
-          </br>
-          <div th:if="${loggedin eq 'yes'}">
-          	<div class="col-md-12" align="center">
+    	<!-- Main jumbotron for a primary marketing message or call to action -->
+      	<div class="jumbotron">
+        	<div class="container">
+          	</br>
+          	</br>
+          	<h1 class="display-2">Track Spending & Know them</h1>
+          	</br>
+          	<div sec:authorize="isAuthenticated()">
+				<div class="col-md-12" align="center">
             	<div class="card" style="width: 18rem;">
             		<strong> <p class="display-5">Welcome <span th:text=*{username}></span> !</p></strong>
             		<p><a class="btn btn-primary btn-xl" th:href="@{/home}" role="button">
           				Start Tracking</a>
 	        		</p>
+	        		
 	        	</div>
           	</div>
-          </div>
-          <div th:if="${loggedin eq 'no'}">
-	          <p><a class="btn btn-primary btn-xl" th:href="@{/login}" role="button">
+		  	</div>
+		  	<div sec:authorize="isAnonymous()">
+		  		<p><a class="btn btn-primary btn-xl" th:href="@{/login}" role="button">
 	          		<i class="glyphicon glyphicon-log-in"></i>
 	          		Login</a>&nbsp;&nbsp;&nbsp; 
 	          		Or <a th:href="@{/register}">register</a>
-	          </p>
-	      </div>
+	          	</p>
+			</div>
+
           </br>
           </br>
           <p class="display-5 ">Want to save money?</p>
@@ -159,7 +144,12 @@
                 <p class="card-text">
                 	Record and track every individual spendings and never forget a transaction.
                 </p>
-                <a href="#" class="btn btn-primary">Start Tracking</a>
+                <div sec:authorize="isAuthenticated()">
+                	<a th:href="@{/home}" class="btn btn-primary">Start Tracking</a>
+                </div>
+                <div sec:authorize="isAnonymous()">
+	            	<a class="btn btn-primary" th:href="@{/noLogin}">Start Tracking</a>
+	            </div>
               </div>
             </div>
           </div>
@@ -172,7 +162,12 @@
                 <p class="card-text">
                 	Get a summary of your spendings so you know where you can save money.
 				</p>
-                <a href="#" class="btn btn-primary">Go to Summary</a>
+				<div sec:authorize="isAuthenticated()">
+                	<a th:href="@{/report}" class="btn btn-primary">Go to Summary</a>
+                </div>
+                <div sec:authorize="isAnonymous()">
+            		<a class="btn btn-primary" th:href="@{/noLogin}">Go to Summary</a>
+            	</div>
               </div>
             </div>
           </div>
@@ -185,22 +180,34 @@
                 <p class="card-text">
 					A series of interactive visualizations to help you to better understand your spending habits.
 				</p>
-                <a href="#" class="btn btn-primary">Explore Now</a>
+				<div sec:authorize="isAuthenticated()">
+                	<a th:href="@{/report}" class="btn btn-primary">Explore Now</a>
+                </div>
+                <div sec:authorize="isAnonymous()">
+	            	<a class="btn btn-primary" href="#visualize">Explore Now</a>
+	            </div>
               </div>
             </div>
           </div>
         </div>
-
-        <hr>
-
+		<br/>
       </div> <!-- /container -->
-
+	  
+	  <br/>
+	  <br/>
+	  <div align="center" id="visualize" class="container">
+	  	<h1 class="display-4" >Visualize top spenders, everyday spendings, and monthly spendings</h1>
+	  	<div class="col-md-10">
+	  	<img class="card-img-top" th:src="@{/static/img/visualize1.png}" alt="Photo by Isaac Smith on Unsplash">
+	  	<img class="card-img-top" th:src="@{/static/img/visualize2.png}" alt="Photo by Isaac Smith on Unsplash">
+	  	</div>
+	  </div>
     </main>
-
-    <footer class="container">
-      <p>&copy; Dango </p>
-    </footer>
-
+	</div>
+    <footer id="footer" class="container">
+		<p>&copy; Dango </p>
+	</footer>
+</div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

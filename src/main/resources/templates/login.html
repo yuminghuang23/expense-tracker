@@ -11,26 +11,7 @@
 
     <!-- Theme CSS - Includes Bootstrap -->
   	<link th:href="@{static/css/jumbotron.css}" rel="stylesheet">
-	<style>
-		.jumbotron {
-			  background: url("../static/img/bg-home2.jpg");
-			  background-repeat: no-repeat;
-			  background-size: cover;
-		    }
-  		.nav-item a, .dropdown a{
-  				font-size: 1.25em;
-		    }
-		.navbar-nav > li{
-				padding-left:10px;
-			    padding-right:10px;
-			}
-		.dropdown-item a{
-				font-size: 0.5em;
-			}
-		span#copyright_img{
-				font-size: 0.7em;
-			}
-	</style>
+	<link th:href="@{static/css/standard.css}" rel="stylesheet">
     <title>Login</title>
 </head>
 <body>
@@ -43,17 +24,17 @@
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav ml-auto my-lg-0">
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" th:href="@{/}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/home}">Track</a>
+            	<a class="nav-link disabled" th:href="@{/home}">Track</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/report}">Report</a>
+            	<a class="nav-link disabled" th:href="@{/report}">Report</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/allRecords}">Records</a>
+            	<a class="nav-link disabled" th:href="@{/allRecords}">Records</a>
           </li>
           <li class="dropdown active">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
@@ -119,9 +100,11 @@
     <br>
     <br>
     </div>
-	<footer class="container">
+    
+	<footer id="footer" class="container">
       <p>&copy; Dango </p>
     </footer>
+    
 	<!-- Bootstrap Core JavaScript -->
     <script th:src="@{/static/vendor/jquery/jquery.min.js/}"></script>
     <script th:src="@{/static/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>

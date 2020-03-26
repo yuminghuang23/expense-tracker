@@ -82,7 +82,88 @@
 		    d3.select(self.frameElement)
 		        .style("height", diameter + "px");
         }
-   
+        
+        // *************** SECOND BUBBLE CHART ***************** //
+        function DrawBubbleChartCurrent(allRecordsByCat, color) {
+		    var diameter = +d3.select('#bubbleCurrent').style('width').slice(0, -2)*0.5;
+		    
+		 	// Define the div for the tooltip
+	        var div = d3.select("div#bubbleCurrent").append("div")	
+	                .attr("class", "tooltip")				
+	                .style("opacity", 0);
+	        
+	        var bubble = d3.pack(allRecordsByCat)
+	            .size([diameter, diameter])
+	            .padding(1.5);
+	
+	        var svg = d3.select("div#bubbleCurrent")
+	            .append("svg")
+	            .attr("width", diameter)
+	            .attr("height", diameter)
+	            .attr("class", "bubble");
+	        
+	        var nodes = d3.hierarchy({children: allRecordsByCat})
+	            .sum(function(d) { return d.cost; });
+	        
+	        var node = svg.selectAll(".node")
+	            .data(bubble(nodes).descendants())
+	            .enter()
+	            .filter(function(d){
+	                return  !d.children
+	            })
+	            .append("g")
+	            .attr("class", "node")
+	            .attr("transform", function(d) {
+	                return "translate(" + d.x + "," + d.y + ")";
+	            });
+	        
+	        node.append("circle")
+		        .attr("r", function(d) {
+		            return d.r;
+		        })
+		        .style("fill", function(d,i) {
+		            return color(i);
+		        })
+	        	.on("mouseover", function(d) {		
+	                div.transition()		
+	                    .duration(20)		
+	                    .style("opacity", .9);		
+	                div.html(d.data.category + " $" + d.data.cost)	
+	                    .style("left", (d3.event.pageX) + "px")		
+	                    .style("top", (d3.event.pageY) + "px");	
+	            })					
+	            .on("mouseout", function(d) {		
+	                div.transition()		
+	                    .duration(50)		
+	                    .style("opacity", 0); });
+	
+		    node.append("text")
+		        .attr("dy", ".2em")
+		        .style("text-anchor", "middle")
+		        .text(function(d) {
+		            return d.data.category.substring(0, d.r / 3);
+		        })
+		        .attr("font-family", "sans-serif")
+		        .attr("font-size", function(d){
+		            return d.r/3.5;
+		        })
+		        .attr("fill", "white");
+		
+		    node.append("text")
+		        .attr("dy", "1.3em")
+		        .style("text-anchor", "middle")
+		        .text(function(d) {
+		            return "$" + d.data.cost;
+		        })
+		        .attr("font-family",   "sans-serif")
+		        .attr("font-size", function(d){
+		            return d.r/3;
+		        })
+		        .attr("fill", "white");
+		
+		    d3.select(self.frameElement)
+		        .style("height", diameter + "px");
+        }
      	// ***************** STACKED BAR CHART ***************** //
         function DrawStackBar(allRecordsByCatDate, color, enumList) {
         	// set up width, height, margin

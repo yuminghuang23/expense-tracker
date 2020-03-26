@@ -66,3 +66,47 @@
             }
             return jsonFinal;
         }
+        
+        
+     // ***************** STATISTICS SUMMARY ***************** //
+        var date = new Date();
+        
+        // previous month
+        var totalSpend = 0;
+        for (var i = 0; i < allRecordsByCat.length; i++) {
+        	totalSpend += allRecordsByCat[i].cost;
+        }
+        document.getElementById('totalLastMonth').innerHTML = totalSpend;
+        
+        // function to get days in previous month
+        function daysInMonth (month, year) { 
+            return new Date(year, month, 0).getDate(); 
+        } 
+        
+        // monthly spending
+        var days = daysInMonth(date.getMonth(), 2020);
+        console.log(days);
+        var avgDaily = Math.round(totalSpend/days*100)/100;
+        document.getElementById('avgDaily').innerHTML = avgDaily;
+        
+        // weekly spending
+        var avgWeekly = Math.round(avgDaily*700)/100;
+        document.getElementById('avgWeekly').innerHTML = avgWeekly;
+        
+        // current month
+        var totalSpendCurrent = 0;
+        for (var i = 0; i < currentMonth.length; i++) {
+        	totalSpendCurrent += currentMonth[i].cost;
+        }
+        document.getElementById('totalCurrentMonth').innerHTML = totalSpendCurrent;
+        
+     	// monthly spending
+        var daysCurrent = daysInMonth(date.getMonth() + 1, 2020);
+        console.log(daysCurrent);
+        var avgDailyCuurent = Math.round(totalSpendCurrent/days*100)/100;
+        document.getElementById('avgDailyCurrent').innerHTML = avgDailyCuurent;
+        
+        // weekly spending
+        var avgWeeklyCurrent = Math.round(avgDailyCuurent*700)/100;
+        document.getElementById("avgWeeklyCurrent").innerHTML = avgWeeklyCurrent;
+     

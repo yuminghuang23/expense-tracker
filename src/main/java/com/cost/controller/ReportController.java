@@ -34,6 +34,7 @@ public class ReportController {
     	String username = globalController.getLoginUser().getUsername();
     	int userId = globalController.getLoginUser().getUserId();
     	
+    	// previous month
     	YearMonth month = YearMonth.from(LocalDate.now());
     	month = month.minusMonths(1);
     	LocalDate start = month.atDay(1);
@@ -54,12 +55,21 @@ public class ReportController {
     	List<Categories> listEnum = getAllEnum();
     	
     	List<MonthlySum> monthlySumByUser = monthlySumService.findByUserIdOrderByMonthYear(userId);
+    	System.out.println("monthlySumByUser:" + "\n" + monthlySumByUser);
+    	
+    	// current month
+    	YearMonth monthNow = YearMonth.from(LocalDate.now());
+    	LocalDate startNow = monthNow.atDay(1);
+    	LocalDate endNow   = monthNow.atEndOfMonth();
+    	
+    	List<SmallRecord> recordsSumGroupedByCatNow = recordService.getBetweenRecordDateByCategory(userId, startNow, endNow);
     	
     	model.addAttribute("enumList", listEnum);
     	model.addAttribute("username", username);
     	model.addAttribute("recordsSumGroupedByCatDate", recordsSumGroupedByCatDate);
     	model.addAttribute("recordsSumGroupedByCat", recordsSumGroupedByCat);
     	model.addAttribute("monthlySumByUser", monthlySumByUser);
+    	model.addAttribute("currentMonth", recordsSumGroupedByCatNow);
     	return "report";
     }
 	

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style>
+		.btn {
+		    color: #fff;
+		    background-color: #337ab7;
+		    border-color: #337ab7;
+		}
+
+	</style>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+    <link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen"/>
+	<title>Home</title>
+	
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Kane</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+        <li><a th:href="@{/report}">Report</a></li>
+        <li><a th:href="@{/allRecords}">Records</a></li>
+      </ul>
+     
+      <ul class="nav navbar-nav navbar-right">
+        <li><a>Welcome <span th:text=*{username}></span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Profile</a></li>
+            <li><a th:href="@{/changePassword}">Change Password</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-5 col-md-offset-1 form-group">
+			<h1 class="content-title">&nbsp;Records</h1>
+			<form th:object="${reqRecord}" th:action="@{/record/saveRecord}" method="post">
+            	<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-3" align="left">Category</div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<select  class="form-control" th:field="*{category}" placeholder="*{Category}" name="Category">
+	   								<option th:each="state : ${T(com.cost.utils.Categories).values()}"
+									            th:value="${state}" th:text="${state}">
+									</option>
+								</select>
+                            </div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3" align="left">Cost</div>
+						<div class="col-md-5">
+							<div class="form-group">
+	                        	<input id="cost" th:field="*{cost}" type="text" class="form-control" name="Cost"
+	                                       required="required" placeholder="Cost"/>
+	                        </div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3" align="left">Record Date</div>
+						<div class="col-md-5">
+							<div class="form-group">
+	                        	<div class="input-group date" id="recordDate">
+	                            	<input th:field="*{recordDate}" class="form-control" name="recordDate"
+	                                           required="required" placeholder="Record Date" id="recordDate"/>
+	                                <span class="input-group-addon">
+	                                	<span class="glyphicon glyphicon-calendar"></span>
+	                               	</span>
+	                            </div>
+                           	</div>
+						</div>
+					</div>
+                    <button class="btn" >
+                    	<span class="glyphicon glyphicon-plus"></span>
+                        Add Record
+                    </button>
+               	</div>
+               	<br/>
+        	</form>
+		</div>
+		<div class="col-md-6" id="chart">
+				<h1 class="content-title">Past 7 days' Spending Summary</h1>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1 form-group">
+    		<h1 class="content-title">&nbsp;Latest 5 Records</h1>
+    		<table class="table table-striped table-responsive-md">
+            	<thead>
+                	<tr>
+   						<th>Category</th>
+  						<th>Cost</th>
+						<th>Record Date</th>
+						<th>Edit</th>
+						<th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr th:if="${#lists.isEmpty(records)}" class="btn-default">
+                    	<td colspan="5" align="center"><h3>No Record Entered Yet</h3></td>
+                     </tr> 
+                     <tr th:each="record, index : ${records}" th:unless="${index.index > 4}">
+                     	<td th:text="${record.category}"></td>
+                        <td th:text="${record.cost}"></td>
+                        <td th:text="${record.recordDate}"></td>
+                        <td>
+                        	<a th:href="@{/record/edit/{id}(id=${record.recordId})}" class="btn btn-primary">
+                            	<i class="glyphicon glyphicon-edit"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="@{/record/delete/{id}(id=${record.recordId})}" class="btn btn-danger delBtn">
+                            	<i class="glyphicon glyphicon-trash"></i>
+                            </a>
+                        </td>
+                 	</tr>
+            	</tbody>
+           	</table>
+    	</div>
+    	<!--  Modal for delete -->
+    	<div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="myModal"
+	         role="dialog" tabindex="-1">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="myModalLabel">Delete Record</h5>
+	                    <button aria-label="Close" class="close" data-dismiss="modal"
+	                            type="button">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">
+	                    <p class="alert alert-danger">
+	                        Are you sure you want to delete this country?
+	                    </p>
+	                </div>
+	                <div class="modal-footer">
+	                    <button class="btn btn-secondary" data-dismiss="modal"
+	                            type="button">Close
+	                    </button>
+	                    <a class="btn btn-danger" href="" id="delRef">Delete</a>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+    </div>       
+    </div>    
+	<!-- scripts -->
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    
+    <!-- DateTimePicker -->
+    <script th:src="@{/static/js/moment-with-locales.js}"></script>
+    <script th:src="@{/static/js/bootstrap-datetimepicker.min.js}"></script>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+    <!-- underscore library -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+    
+    <script type="text/javascript">
+	    <!-- 
+	    $(function () {
+	        $('#startDatePicker').datetimepicker({
+	            defaultDate: 'now',
+	            viewMode: 'days',
+	            format: 'DD/MM/YYYY HH:mm:ss'
+	        });
+	    });
+	     -->
+	    $(function () {
+	        $("#recordDate").datetimepicker({
+	            defaultDate: "now",
+	            viewMode: "days",
+	            format: "DD/MM/YYYY"
+	        });
+	    });
+	    
+	    $(".table .delBtn").on("click", function (event) {
+	        event.preventDefault();
+	        var href = $(this).attr("href");
+	        $("#myModal #delRef").attr("href", href);
+	        $("#myModal").modal();
+	    });
+	</script>
+	<script th:inline="javascript">
+		/*Aggregate data*/
+        var records = /*[[${d3List}]]*/ {};
+        //console.log(records);
+        //console.log(records[0].recordId);
+        //console.log(records);
+    
+	</script>
+	<script src="js/home-page-graph.js"></script>
+</body>
+</html>

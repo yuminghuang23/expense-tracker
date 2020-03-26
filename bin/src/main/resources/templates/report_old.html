@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" href="css/report-page-graph-css.css" />
+    <title>Report Page</title>
+	<style>
+		.btn {
+		    color: #fff;
+		    background-color: #337ab7;
+		    border-color: #337ab7;
+		}
+		#.navbar-default {
+		  	background-color: #CDD5E3 !important;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+  		<div class="container-fluid">
+		    <!-- Brand and toggle get grouped for better mobile display -->
+		    <div class="navbar-header">
+		    	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+		      	</button>
+		      	<a class="navbar-brand" href="#">Kane</a>
+		    </div>
+
+    		<!-- Collect the nav links, forms, and other content for toggling -->
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		    	<ul class="nav navbar-nav">
+		        	<li><a th:href="@{/home}">Home</a></li>
+		        	<li class="active"><a th:href="@{/report}">Report <span class="sr-only">(current)</span></a></li>
+		        	<li><a th:href="@{/allRecords}">Records</a></li>
+		      	</ul>
+     
+	      		<ul class="nav navbar-nav navbar-right">
+		        	<li><a>Welcome <span th:text=*{username}></span></a></li>
+		        	<li class="dropdown">
+			          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+			          	<ul class="dropdown-menu">
+			            	<li><a href="#">Profile</a></li>
+			            	<li><a th:href="@{/changePassword}">Change Password</a></li>
+			            	<li role="separator" class="divider"></li>
+			            	<li><a th:href="@{/logout}">Logout</a></li>
+			          	</ul>
+		        	</li>
+	      		</ul>
+    		</div><!-- /.navbar-collapse -->
+  		</div><!-- /.container-fluid -->
+  	</nav>
+  
+  	<div class="container">
+  		<div class="col-md-12 form-group ">
+	  		<h3 class="col-md-offset-5">Summary</h3>
+	  		<ul class="nav nav-pills col-md-offset-2">
+	  			<li class="active">
+		    		<a href="#tab1"  data-toggle="tab">Statistics Summary</a>
+		    	</li>
+		    	<li>
+		    		<a href="#tab2" data-toggle="tab">Previous Month Summary</a>
+		    	</li>
+		    	<li>
+		    		<a href="#tab3" data-toggle="tab">Previous Week Summary</a>
+		    	</li>
+		    	<li>
+		    		<a href="#tab4" data-toggle="tab">Historical Data</a>
+		    	</li>
+		  	</ul>
+			<div class="panel-body">
+		    	<div class="tab-content">
+		        	<div class="tab-pane active" id="tab1">
+		        		<h2>Statistics summary of last month</h2>
+		                <ul>
+		                	<li>How much spend last month, total</li>
+						    <li>in each category</li>
+						    <li>Compare current to past</li>
+						    <li>Avg daily spending</li>
+						    <li>Avg weekly spending</li>
+		                </ul>
+		            	<div id="bubble"></div>                 	  	
+		            </div>
+		            <div class="tab-pane" id="tab2">
+		               	<div class="col-md-6">
+						    <h3>Filter</h3>
+						    <!-- tabs left -->
+						    <div class="tabbable tabs-left">
+							    <ul class="nav navbar-left col-md-2">
+						    	    <li class="active"><a href="#monthOverall" data-toggle="tab">Overall Summary</a></li>
+						            <li><a href="#monthByCat" data-toggle="tab">By Category</a></li>
+						        </ul>
+						   		<div class="tab-content col-md-9">
+						        	<div class="tab-pane active" id="monthOverall">
+						            	<div id="bar" class="svg-container"></div> 
+						            </div>
+						            <div class="tab-pane" id="monthByCat">
+						            	<div class="styled-select">
+							                <p id = 'dropdown_title' style="font-family: arial;" >Select Category</p>
+							                <select th:field="*{enumList}" id="categoryDropdown">
+												<option th:each="i : ${enumList}" th:id="${i}" th:value="${i}" th:text="${i}">
+												</option>
+											</select>
+						                </div>
+						                <div id="barByCategory" class="svg-container"></div>
+						           	</div>
+						       	</div>
+							</div>
+						<!-- /tabs -->
+						</div>
+		            </div>
+		            <div class="tab-pane" id="tab3">Coming Soon....</div>
+		            <div class="tab-pane" id="tab4">
+		            	<h2>line chart, total spending each month</h2>
+		            	<div id="lineChart" class="svg-container"></div>
+		            	<h2>Forecast possible?</h2>
+		            </div>          	
+		        </div>
+		    </div>
+		</div>
+	</div>
+          
+    <!-- scripts -->
+	<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/webjars/font-awesome/5.0.10/web-fonts-with-css/css/fontawesome-all.min.css"/>
+    
+    <!-- DateTimePicker -->
+    <link th:href="@{/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" media="screen"/>
+    <script th:src="@{/static/js/moment-with-locales.js}"></script>
+    <script th:src="@{/static/js/bootstrap-datetimepicker.min.js}"></script>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    
+    <script th:inline="javascript">
+    	//************** Jquery for div width ************//
+    	 var w = $(window).width();
+ 		$('.svg-container').css('width', w*0.8);
+ 		
+    	//******************** All Data ******************//
+    	var allRecordsByCatDate = /*[[${recordsSumGroupedByCatDate}]]*/ {};
+        //console.log(allRecordsByCatDate);
+        
+    	var enumList = /*[[${enumList}]]*/ {};
+        console.log(enumList);
+        //console.log(enumList[0]);
+        
+        var allRecordsByCat = /*[[${recordsSumGroupedByCat}]]*/ {};
+        //console.log(allRecordsByCat);
+        
+        var monthlySumByUser = /*[[${monthlySumByUser}]]*/ {};
+        //console.log(monthlySumByUser);
+        
+        //******************** GLOBAL VARIABLE *************************//
+        var color = ["#98abc5", "#8a89a6", "#7b6888", "#3288bd", "#a05d56", "#d0743c", "#ff8c00",
+	                    "#DAF7A6", "#FF5733", "#c7eae5", "#b2df8a","#33FFBD","#e6194b","#ffe119","#fabebe","#35978f"];
+	        
+	    var color = d3.scaleOrdinal()
+	        .range(color);
+	</script>  
+	
+    <!-- //********************FUNCTIONS *************************// -->
+    <script src="js/report-page-function.js"></script>
+    <script src="js/report-page-graph.js"></script>
+    <script th:inline="javascript">   
+    
+        // ***************** PROCESS DATA ***************** //
+        // sort data first 
+        allRecordsByCatDate.sort(sortFunction);
+        //console.log(allRecordsByCatDate);
+        // get all dates from last month 
+        var date = new Date();
+        var firstDay =  new Date(date.getFullYear(), date.getMonth() - 1, 1); 
+        var lastDay =  new Date(date.getFullYear(), date.getMonth(), 0);
+        var dateArr = getAllDates(firstDay, lastDay);
+        //console.log(dateArr);
+        // get final json 
+        var allRecordsByCatDate = finalJson(allRecordsByCatDate, dateArr);
+        //console.log(allRecordsByCatDate);
+		
+        dataForLine = monthlySumByUser.sort(sortFunctionForLineData); 
+        
+        console.log(allRecordsByCat);
+        console.log(allRecordsByCatDate);
+        console.log(allRecordsByCatDate);
+        console.log(dataForLine);
+        
+        //display = JSON.stringify(allRecordsByCatDate, null, 4);
+        //document.getElementById("demo").innerHTML = display;
+        
+     	// ***************** DRAW ALL GRAPH ***************** //
+        DrawBubbleChart(allRecordsByCat, color)
+     	//DrawStackBar(allRecordsByCatDate, color);
+        DrawStackBar(allRecordsByCatDate, color, enumList);
+        DrawBarByCategory('CAR', allRecordsByCatDate);
+        DrawLineChart(dataForLine);
+        
+        // change graph based on selection
+        d3.selectAll("#categoryDropdown").on("change", change);
+        
+    	// function to change category and re-plot based on selection
+        function change() {
+            var e = document.getElementById("categoryDropdown");
+            //console.log(e.selectedIndex);
+            //console.log(e.options[e.selectedIndex].value);
+            var category = e.options[e.selectedIndex].value;
+            var s = d3.selectAll('svg');
+            s = s.remove();
+            
+            DrawBubbleChart(allRecordsByCat, color);
+            DrawBarByCategory(category, allRecordsByCatDate);
+            //DrawStackBar(allRecordsByCatDate, color);
+            DrawStackBar(allRecordsByCatDate, color, enumList);
+            DrawLineChart(dataForLine);
+            
+        }
+    </script>
+</nav>
+</body>
+</html>

@@ -89,6 +89,17 @@ public class UserController {
         return "login";
     }
     
+    @RequestMapping("/noLogin")
+    public String noLogin(Model model) {
+    	if(globalController.getLoginUser() == null) {
+    		return "noLogin";
+    	}
+    	else {
+    		return "redirect:/";
+    	}
+        
+    }
+    
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
